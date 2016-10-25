@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    welcome to belt index
+    <h1>Welcome login {{request.session.name}} {{request.session.userid}}</h1>
+    <a href="{% url 'belt:additem' %}">Add Item</a>
+    <a href="{% url 'belt:logout' %}">LogOut</a>
+    <h1>My wishlist</h1>
+    <table>
+      <thead>
+        <th>
+          product
+        </th>
+        <th>
+          added by
+        </th>
+        <th>
+          added date
+        </th>
+        <th>
+          actions
+        </th>
+      </thead>
+      <tbody>
+        {%for product in products %}
+        {% if product.user.id == request.session.userid or user in product.join.all %}
+        <tr>
+          <td>
+            <a href="{% url 'belt:show_product' id=product.id %}">{{product.prod_name}}</a>
+          </td>
+          <td>
+            {{product.user.username}}
+          </td>
+          <td>
+            {{product.created_at}}
+          </td>
+          <td>
+            {% if product.user.id == request.session.userid %}
+            <a href="{% url 'belt:deleteprod' id=product.id %}">delete</a>
+            {% else %}
+            <a href="{% url 'belt:removefromwishlist' id=product.id %}">remove from my list</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+    <h1>other users wishlist</h1>
+    <table>
+      <thead>
+        <th>
+          product
+        </th>
+        <th>
+          added by
+        </th>
+        <th>
+          added date
+        </th>
+        <th>
+          actions
+        </th>
+      </thead>
+      <tbody>
+        {%for product in products %}
+        {% if not product.user.id == request.session.userid and user not in product.join.all%}
+        <tr>
+          <td>
+          <a href="{% url 'belt:show_product' id=product.id %}">{{product.prod_name}}</a>
+          </td>
+          <td>
+            {{product.user.username}}
+          </td>
+          <td>
+            {{product.created_at}}
+          </td>
+          <td>
+            <a href="{% url 'belt:addtowishlist' id=product.id %}">add to my wishlist</a>
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </body>
+</html>

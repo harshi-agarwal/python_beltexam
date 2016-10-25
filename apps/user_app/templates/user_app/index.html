@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <p>
+      welcome
+    </p>
+    <h3>Register</h3>
+    <form  action="{% url 'user:register' %}" method="post">
+      {% csrf_token %}
+      name<input type="text" name="name">
+      username <input type="text" name="username" >
+      Password <input type="Password" name="Password" >
+      Confirm Password: <input type="Password" name="cpassword">
+      Date hired: <input type="date" name="datehired" >
+      <input type="submit"  value="Register">
+    </form>
+
+    <p>
+      {% if messages %}
+     <ul class="messages">
+       {% for message in messages %}
+       <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+       {% endfor %}
+     </ul>
+     {% endif %}
+    </p>
+    <p>
+      {{msg}}
+    </p>
+    <h3>Login</h3>
+    <form class="" action="{% url 'user:login' %}" method="post">
+      {% csrf_token %}
+      username:<input type="text" name="username" >
+      Password: <input type="password" name="Password" >
+      <input type="submit" value="Login">
+    </form>
+
+
+  </body>
+</html>
